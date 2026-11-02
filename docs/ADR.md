@@ -6,7 +6,7 @@
 - Runtime: Node.js 24.15 or newer for Nest 12 generators. This machine has Node `v24.13.0`, which is below the schematics minimum in the [NestJS 12 migration guide](https://docs.nestjs.com/migration-guide). Upgrade Node before `nest new` / `nest generate`.
 - Frontend (`miniapp/`): React `19.3.1`, Vite `8.3.5`, TypeScript `6.0.3`, Tailwind CSS `4.3.3` when UI work starts. Telegram client SDK: `@tma.js/sdk` `3.3.0` and `@tma.js/sdk-react` `3.0.23` (React 17–19 peer). Do not start new code on `@telegram-apps/*`.
 - Backend (`backend/`): NestJS `12.3.2` (`@nestjs/core` latest on 2026-11-02; Node `>=20`), TypeScript `6.0.3`. Nest schematics peer on TypeScript 6. Do not install TypeScript 7 for `nest build`; 7.0.2 is current `latest` and the Nest CLI still needs the TypeScript 6 compiler API ([migration guide](https://docs.nestjs.com/migration-guide)).
-- Data: PostgreSQL 17 in local Docker only. Prisma CLI and Client pin `7.10.1` (`prev` dist-tag). `prisma@latest` on this date is `8.0.0-rc.29`, a release candidate, and is out of scope.
+- Data: PostgreSQL 17 in local Docker only. Prisma CLI and Client are installed at `7.10.1`. Do not upgrade to the Prisma 8 release candidate. Runtime uses `@prisma/adapter-pg`, which the generated client requires.
 - Tests/lint to confirm when scaffolding in P1: Vitest for the ESM Nest app and for Vite; oxlint if `nest new` emits it. Playwright waits until a critical flow exists.
 - Validation: `class-validator` with Nest `ValidationPipe`, matching the backend rule. Nest 12 also supports Standard Schema; do not add Zod unless a measured gap appears.
 - Explicitly not in the MVP install set: MUI, Three.js, a WebXR engine, Redis, Kafka, `@nestjs/schedule`, and any bank/open-banking client.

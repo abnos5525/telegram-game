@@ -1,12 +1,12 @@
 # Current state
 
-- Status: P1 foundation is in place. No gameplay.
-- Active phase: none until the user says `برو بعدی`. Next phase is P2 — Data model.
-- Completed phases: P0 — Discovery (2026-11-02). P1 — Foundation (2026-11-02).
-- Current objective: wait. P2 may add the Prisma 7.10.1 schema, migrations, constraints, indexes, seed data, and DB tests. No gameplay screens.
-- Apps: `miniapp/` (React 19.3.1, Vite 8.3.5, TypeScript 6.0.3) and `backend/` (NestJS 12.3.2, TypeScript 6.0.3). Tailwind and `@tma.js/*` stay uninstalled until a screen needs them. Versions remain in `docs/ADR.md`.
-- Local database: `docker compose` Postgres 17 is up and healthy on port 5432. Connection string is in `.env.example`. Prisma is not installed yet.
-- Last verified commands, all exit 0: `npm test` (miniapp 1 passed, backend 1 passed), `npm run typecheck`, `npm run lint`, `npm run build`. `GET http://localhost:3000/health` returned `{ "status": "ok" }`. Browser opened `http://localhost:5173/` and showed the heading «شکار گنج». Those two dev servers were stopped after the check. `docker compose ps` showed `telegram-game-postgres-1` healthy.
-- Scaffold note: Node is still `v24.13.0`, so `nest new` was not used. The app was written by hand and compiled with `tsc`. Nest generators still need Node 24.15+.
-- Blockers: this folder is still not a git repository, so `.gitignore` does not protect the existing root `.env` until `git init`. That file was not opened. No device test.
-- Next action: on `برو بعدی`, execute P2 only.
+- Status: P3 identity checks are in the API. No gameplay collection route yet.
+- Active phase: none until the user says `برو بعدی`. Next phase is P4 — Game API.
+- Completed phases: P0 — Discovery. P1 — Foundation. P2 — Data model. P3 — Identity/security (2026-11-02).
+- Current objective: wait. P4 may add games, missions, items, sessions, collection, the score ledger, and idempotent atomic operations.
+- Auth: `POST /auth/telegram` verifies `initData` with the bot token, rejects a stale `auth_date`, and upserts a `PLAYER`. The response token is an HMAC session of one hour. Each protected request loads the user and role from the database. `GET /users/:id` is only for the same user or an `ADMIN`. An admin read of someone else writes `user.read` to `AuditLog`.
+- Rate limit: `POST /auth/telegram` allows `AUTH_RATE_LIMIT` attempts per minute per client address, default 10. The counter is in memory and resets on restart.
+- Node on this machine is `v26.13.0`. Nest generators are no longer blocked by the old 24.13 runtime.
+- Last verified commands, all exit 0, in `backend/`: `npm test` (8 passed), `npm run typecheck`, `npm run lint`, `npm run build`. Miniapp scripts were not rerun.
+- Residual risk: a stolen token works until it expires, and the rate limit does not span multiple server processes. Secrets stay in gitignored `backend/.env`.
+- Next action: on `برو بعدی`, execute P4 only.

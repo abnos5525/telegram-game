@@ -1,0 +1,142 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  PLAYER
+  ADMIN
+}
+
+enum GameStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum ItemRarity {
+  COMMON
+  RARE
+  EPIC
+}
+
+model User {
+  id           String       @id @default(cuid())
+  telegramId   String       @unique
+  displayName  String
+  role         UserRole     @default(PLAYER)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  collections  Collection[]
+  scoreEntries ScoreEntry[]
+  badges       UserBadge[]
+  auditActions AuditLog[]   @relation("AuditActor")
+}
+
+model Game {
+  id          String     @id @default(cuid())
+  slug        String     @unique
+  title       String
+  description String
+  status      GameStatus @default(DRAFT)
+  publishedAt DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  missions    Mission[]
+  badges      Badge[]
+
+  @@index([status])
+}
+
+model Mission {
+  id          String @id @default(cuid())
+  gameId      String
+  game        Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  code        String
+  sortOrder   Int
+  title       String
+  description String
+  items       Item[]
+
+  @@unique([gameId, code])
+  @@unique([gameId, sortOrder])
+}
+
+model Item {
+  id           String       @id @default(cuid())
+  missionId    String
+  mission      Mission      @relation(fields: [missionId], references: [id], onDelete: Cascade)
+  code         String
+  title        String
+  rarity       ItemRarity
+  points       Int
+  latitude     Decimal      @db.Decimal(9, 6)
+  longitude    Decimal      @db.Decimal(9, 6)
+  radiusMeters Int
+  collections  Collection[]
+
+  @@unique([missionId, code])
+}
+
+model Collection {
+  id            String     @id @default(cuid())
+  userId        String
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  itemId        String
+  item          Item       @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  pointsAwarded Int
+  collectedAt   DateTime   @default(now())
+  scoreEntry    ScoreEntry?
+
+  @@unique([userId, itemId])
+}
+
+model ScoreEntry {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  collectionId String     @unique
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Restrict)
+  points       Int
+  createdAt    DateTime   @default(now())
+
+  @@index([userId])
+}
+
+model Badge {
+  id             String      @id @default(cuid())
+  gameId         String
+  game           Game        @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  code           String
+  title          String
+  requiredPoints Int
+  awards         UserBadge[]
+
+  @@unique([gameId, code])
+}
+
+model UserBadge {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  awardedAt DateTime @default(now())
+
+  @@unique([userId, badgeId])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  actor      User     @relation("AuditActor", fields: [actorId], references: [id], onDelete: Restrict)
+  action     String
+  targetType String
+  targetId   String
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}
