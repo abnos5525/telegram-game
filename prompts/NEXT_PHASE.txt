@@ -1,0 +1,3 @@
+برو بعدی
+
+Read docs/STATE.md first. Execute only the next incomplete phase in docs/ROADMAP.md. Read only the docs and code relevant to that phase. Preserve existing changes. Implement, test, update STATE/ROADMAP, report briefly in Persian, and stop. Do not repeat completed phases or start another phase.

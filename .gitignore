@@ -1,0 +1,11 @@
+# Ignore local secrets and generated files
+.env
+.env.*
+!.env.example
+bank.txt
+node_modules/
+dist/
+build/
+coverage/
+*.log
+.DS_Store

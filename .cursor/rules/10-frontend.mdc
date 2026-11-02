@@ -1,0 +1,13 @@
+---
+description: Frontend conventions for the Telegram Mini App
+globs:
+  - "miniapp/**"
+alwaysApply: false
+---
+- Mobile-first Telegram WebView. Use `@tma.js/sdk-react` (see ADR-001). Respect viewport CSS variables, theme, safe areas, and the Telegram back button. Do not add MUI.
+- Prefer native browser APIs and existing dependencies. Add packages only for a concrete requirement.
+- Use TanStack Query for server state; add Zustand only for genuinely shared client state.
+- Request camera/location permissions only after a clear user action.
+- Clean up camera streams, event listeners, timers, and geolocation watches on unmount.
+- Lazy-load heavy map/3D code and assets; provide a usable map/list fallback.
+- Keep UI responsive on mid-range phones; avoid unnecessary re-renders and network requests.

@@ -1,0 +1,13 @@
+---
+description: Backend conventions for NestJS and Prisma
+globs:
+  - "backend/**"
+alwaysApply: false
+---
+- Use a modular NestJS 12 monolith under `backend/`; controllers stay thin and business rules live in services. Compile with TypeScript 6. Do not install TypeScript 7 for the Nest CLI.
+- Validate every external DTO; use explicit authorization and ownership checks per resource.
+- PostgreSQL constraints and transactions enforce invariants; do not rely on frontend checks.
+- Collection + score updates must be atomic and idempotent; add unique constraints for replay protection.
+- Add indexes for demonstrated query patterns, not speculatively.
+- Use migrations; never edit production data/schema manually.
+- Keep REST APIs documented and errors predictable. Avoid premature queues, caches, and microservices.

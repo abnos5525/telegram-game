@@ -1,0 +1,12 @@
+---
+description: Load when implementing or debugging camera, GPS, compass, maps, WebAR, or 3D assets.
+alwaysApply: false
+---
+- Distinguish a local camera overlay/preview from world-anchored AR. GPS + compass alone do not provide precise 3D anchoring. Do not add a WebXR or Three.js package in the MVP (ADR-002).
+- Read location through Telegram `LocationManager` and heading through `DeviceOrientation` with `need_absolute`. If `absolute` is false, do not treat the reading as a compass.
+- Verify current support in Telegram iOS/Android WebViews on real devices before relying on `getUserMedia`. Telegram's Mini App docs do not specify camera or WebXR support.
+- Camera access requires user action, permission, and a secure context; handle denial and unsupported devices.
+- Stop all media tracks and location watches when leaving the feature.
+- Preload/cache small static assets where supported; never make first visual feedback depend on a fresh API request.
+- Offline collection stays pending until server validation; never grant final score client-side.
+- Provide a map/list fallback and document tested devices, browser versions, and limitations.

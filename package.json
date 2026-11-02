@@ -1,0 +1,14 @@
+{
+  "name": "telegram-game",
+  "private": true,
+  "scripts": {
+    "dev:miniapp": "npm run dev --prefix miniapp",
+    "dev:backend": "npm run start:dev --prefix backend",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "lint": "npm run lint --prefix miniapp && npm run lint --prefix backend",
+    "typecheck": "npm run typecheck --prefix miniapp && npm run typecheck --prefix backend",
+    "test": "npm run test --prefix miniapp && npm run test --prefix backend",
+    "build": "npm run build --prefix miniapp && npm run build --prefix backend"
+  }
+}

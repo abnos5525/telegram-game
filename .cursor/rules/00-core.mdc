@@ -1,0 +1,15 @@
+---
+description: Minimal project-wide constraints
+alwaysApply: true
+---
+- Product: single-player real-world treasure-hunt Telegram Mini App; multiplayer is future scope.
+- Stack: React/TypeScript/Vite in `miniapp/`; NestJS/TypeScript + PostgreSQL/Prisma in `backend/`.
+- MVP first. No AI, paid infrastructure, hardware, Kafka, Redis, microservices, or extra packages unless a measured need justifies them.
+- Read `docs/STATE.md` first; read only the relevant doc/skill/files for the active task. Never reread the whole project by default.
+- Execute exactly one roadmap phase per user command. Stop after its report; advance only after `برو بعدی`.
+- Inspect `git status` and existing patterns before edits. Preserve user changes; ask before destructive or irreversible actions.
+- Backend is authoritative for identity, permissions, item collection, rewards, and scores. Never trust client-supplied user IDs or scores.
+- Validate Telegram `initData` server-side. Keep secrets out of source, logs, prompts, and Git.
+- Run focused tests, typecheck, lint, and build as relevant; report only commands actually run and their results.
+- Update `docs/STATE.md` after each phase; update roadmap/ADR only when status or decisions change.
+- Keep code minimal, readable, typed, reusable, and testable. Reports in Persian; code, names, and identifiers in English.

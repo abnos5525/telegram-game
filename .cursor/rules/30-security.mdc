@@ -1,0 +1,11 @@
+---
+description: Load for auth, Telegram initData, admin roles, user/location data, uploads, scoring, or security reviews.
+alwaysApply: false
+---
+- Verify Telegram WebApp `initData` on the server using the official algorithm; enforce freshness and constant-time hash comparison.
+- Derive user identity only from verified initData. Never trust `initDataUnsafe`, client user IDs, locations, rewards, or scores.
+- Enforce authentication, role, ownership, and object-level authorization on every protected endpoint (prevent IDOR).
+- Validate inputs, rate-limit sensitive actions, and make reward/collection endpoints idempotent.
+- Keep bot tokens and secrets server-side; never print `.env`, tokens, raw initData, or sensitive coordinates.
+- Minimize location retention; do not upload camera frames unless a separately justified, consented feature requires it.
+- Audit sensitive admin actions. Do not claim absolute security; document residual risks and tested controls.
